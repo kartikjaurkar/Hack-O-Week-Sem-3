@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Week 6 | Student Performance Dashboard</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+<header class="header">
+<div class="header-inner">
+<div class="eyebrow">WEEK 6 • JAVASCRIPT PRACTICAL</div>
+<h1>Student Performance Dashboard</h1>
+<p>Add your own student data and see JavaScript ES6+ methods work in real time.</p>
+</div>
+</header>
+
+<main>
+
+<section class="card">
+<h2>Add Student</h2>
+<p class="subtitle">Manually enter student information. The table, statistics and JavaScript method results update automatically.</p>
+
+<form id="studentForm">
+<div class="form-grid">
+<div class="field">
+<label>Student Name</label>
+<input id="name" type="text" placeholder="e.g. Priya" required>
+</div>
+<div class="field">
+<label>Course</label>
+<select id="course">
+<option>B.Tech CSE</option>
+<option>B.Tech IT</option>
+<option>B.Tech AI</option>
+<option>B.Tech ECE</option>
+<option>B.Tech Mechanical</option>
+</select>
+</div>
+<div class="field">
+<label>Marks (0–100)</label>
+<input id="marks" type="number" min="0" max="100" placeholder="e.g. 85" required>
+</div>
+<div class="field">
+<label>Attendance (0–100)</label>
+<input id="attendance" type="number" min="0" max="100" placeholder="e.g. 90" required>
+</div>
+</div>
+<div class="actions">
+<button type="submit">+ Add Student</button>
+<button type="button" class="secondary" id="sampleButton">Add Sample Data</button>
+<button type="button" class="danger" id="clearButton">Clear All</button>
+</div>
+<p id="error" class="error"></p>
+</form>
+</section>
+
+<section class="card">
+<h2>Dashboard</h2>
+<p class="subtitle">Live calculations based on your current student data.</p>
+<div class="stats">
+<div class="stat"><span>TOTAL STUDENTS</span><strong id="total">0</strong></div>
+<div class="stat"><span>AVERAGE MARKS</span><strong id="average">0</strong></div>
+<div class="stat"><span>TOP STUDENT</span><strong id="topStudent">—</strong></div>
+<div class="stat"><span>PASSING STUDENTS</span><strong id="passing">0</strong></div>
+</div>
+</section>
+
+<section class="card">
+<h2>Student Records</h2>
+<p class="subtitle">This table is generated using <code>map()</code>.</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Name</th><th>Course</th><th>Marks</th><th>Attendance</th><th>Status</th><th>Action</th></tr></thead>
+<tbody id="studentTable"></tbody>
+</table>
+<div id="empty" class="empty">No students added yet. Use the form above.</div>
+</div>
+</section>
+
+<section class="card">
+<h2>JavaScript Methods in Action</h2>
+<p class="subtitle">These results are calculated from the students you manually entered.</p>
+<div id="methodResults" class="result">Add a student to see the results.</div>
+</section>
+
+<section class="card">
+<h2>Required Week 6 Code</h2>
+<p class="subtitle">Select a topic to see the actual code used in this project.</p>
+
+<div class="code-tabs">
+<button class="active" data-code="variables">let / const</button>
+<button data-code="arrow">Arrow Functions</button>
+<button data-code="template">Template Literals</button>
+<button data-code="destructure">Destructuring</button>
+<button data-code="spread">Spread / Rest</button>
+<button data-code="modules">Modules</button>
+<button data-code="methods">Array Methods</button>
+</div>
+
+<pre id="codeBox"></pre>
+</section>
+
+<footer>Week 6 JavaScript Project • Student Performance Dashboard</footer>
+</main>
+
+<script type="module" src="script.js"></script>
+</body>
+</html>

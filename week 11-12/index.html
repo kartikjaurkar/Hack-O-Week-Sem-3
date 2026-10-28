@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>React Study Guide: Hooks & Router</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><b>⚛️ React Study Guide</b><span class="sp"></span><button id="t">Theme</button></header>
+<div class="wrap">
+<nav id="nav"></nav>
+<main>
+<h1>Hooks &amp; React Router</h1>
+<p style="color:var(--mute)">Study notes covering <code>useRef</code>, <code>useMemo</code>, <code>useCallback</code>, <code>useContext</code>, custom hooks, and React Router v6+ (routes, nested routes, params, navigation).</p>
+
+<section id="useref" data-g="Hooks"><h2>useRef</h2><span class="tag">persist a value without re-rendering</span>
+<h3>Purpose</h3>
+<p>Returns a mutable object <code>{ current: ... }</code> that stays the same across renders. Changing <code>.current</code> does <b>not</b> trigger a re-render.</p>
+<h3>Basic usage</h3>
+<pre><code>import { useRef, useEffect } from "react";
+
+function SearchBox() {
+  const inputRef = useRef(null);      // 1. DOM reference
+  const renders = useRef(0);          // 2. mutable value
+
+  useEffect(() =&gt; { inputRef.current.focus(); }, []);
+  renders.current += 1;
+
+  return &lt;input ref={inputRef} placeholder="Search..." /&gt;;
+}</code></pre>
+<div class="use"><b>Use cases:</b> focusing inputs, scrolling to elements, storing timer/interval IDs, keeping the previous value of a prop/state, tracking "is mounted" flags.</div>
+<div class="note"><b>Remember:</b> don't read or write <code>ref.current</code> during rendering for values shown in the UI. Use state for that.</div>
+</section>
+
+<section id="usememo" data-g="Hooks"><h2>useMemo</h2><span class="tag">cache a computed value</span>
+<h3>Purpose</h3>
+<p>Remembers the result of an expensive calculation and only recomputes it when a dependency changes.</p>
+<h3>Basic usage</h3>
+<pre><code>import { useMemo, useState } from "react";
+
+function ProductList({ products }) {
+  const [query, setQuery] = useState("");
+
+  const visible = useMemo(() =&gt; {
+    return products.filter(p =&gt;
+      p.name.toLowerCase().includes(query.toLowerCase()));
+  }, [products, query]);          // recompute only when these change
+
+  return (&lt;&gt;
+    &lt;input value={query} onChange={e =&gt; setQuery(e.target.value)} /&gt;
+    {visible.map(p =&gt; &lt;li key={p.id}&gt;{p.name}&lt;/li&gt;)}
+  &lt;/&gt;);
+}</code></pre>
+<div class="use"><b>Use cases:</b> heavy filtering/sorting, derived data from large lists, keeping an object/array reference stable so a memoized child (<code>React.memo</code>) or an effect dependency doesn't change every render.</div>
+<div class="note"><b>Remember:</b> it's a performance hint, not a guarantee. Don't wrap cheap calculations. Measure first.</div>
+</section>
+
+<section id="usecallback" data-g="Hooks"><h2>useCallback</h2><span class="tag">cache a function</span>
+<h3>Purpose</h3>
+<p>Returns the same function instance between renders unless dependencies change. <code>useCallback(fn, deps)</code> is equivalent to <code>useMemo(() =&gt; fn, deps)</code>.</p>
+<h3>Basic usage</h3>
+<pre><code>import { useCallback, useState, memo } from "react";
+
+const Row = memo(function Row({ item, onDelete }) {
+  console.log("render", item.id);
+  return &lt;li onClick={() =&gt; onDelete(item.id)}&gt;{item.text}&lt;/li&gt;;
+});
+
+function List() {
+  const [items, setItems] = useState([{ id: 1, text: "A" }, { id: 2, text: "B" }]);
+
+  const handleDelete = useCallback(id =&gt; {
+    setItems(prev =&gt; prev.filter(i =&gt; i.id !== id));  // functional update: no stale deps
+  }, []);
+
+  return &lt;ul&gt;{items.map(i =&gt; &lt;Row key={i.id} item={i} onDelete={handleDelete} /&gt;)}&lt;/ul&gt;;
+}</code></pre>
+<div class="use"><b>Use cases:</b> passing callbacks to <code>React.memo</code> children, functions used in <code>useEffect</code> dependency arrays, callbacks given to custom hooks.</div>
+<div class="note"><b>useMemo vs useCallback:</b> <code>useMemo</code> caches a <i>value</i>; <code>useCallback</code> caches a <i>function</i>. Without <code>memo</code> on the child, <code>useCallback</code> gives no benefit.</div>
+</section>
+
+<section id="usecontext" data-g="Hooks"><h2>useContext</h2><span class="tag">share data without prop drilling</span>
+<h3>Purpose</h3>
+<p>Reads the value of a Context from the nearest matching Provider above in the tree, so deeply nested components get data without passing props through every level.</p>
+<h3>Basic usage</h3>
+<pre><code>import { createContext, useContext, useState } from "react";
+
+const ThemeContext = createContext("light");          // 1. create
+
+function ThemeProvider({ children }) {                // 2. provide
+  const [theme, setTheme] = useState("light");
+  const value = useMemo(() =&gt; ({ theme, setTheme }), [theme]);
+  return &lt;ThemeContext.Provider value={value}&gt;{children}&lt;/ThemeContext.Provider&gt;;
+}
+
+function ThemeButton() {                              // 3. consume
+  const { theme, setTheme } = useContext(ThemeContext);
+  return &lt;button onClick={() =&gt; setTheme(theme === "light" ? "dark" : "light")}&gt;{theme}&lt;/button&gt;;
+}</code></pre>
+<div class="use"><b>Use cases:</b> theme, logged-in user, language/locale, shopping cart, app settings.</div>
+<div class="note"><b>Remember:</b> every consumer re-renders when the Provider's <code>value</code> changes, so memoize the value object. Context is for low-frequency, app-wide data, not for rapidly changing state.</div>
+</section>
+
+<section id="custom" data-g="Hooks"><h2>Custom Hooks</h2><span class="tag">reuse stateful logic</span>
+<h3>Purpose</h3>
+<p>A custom hook is a function whose name starts with <code>use</code> and that calls other hooks. It lets you extract and reuse logic (not UI) between components. Each call gets its own independent state.</p>
+<h3>Example 1: useLocalStorage</h3>
+<pre><code>function useLocalStorage(key, initial) {
+  const [value, setValue] = useState(() =&gt; {
+    const saved = localStorage.getItem(key);
+    return saved ? JSON.parse(saved) : initial;
+  });
+  useEffect(() =&gt; {
+    localStorage.setItem(key, JSON.stringify(value));
+  }, [key, value]);
+  return [value, setValue];
+}
+
+// usage
+const [name, setName] = useLocalStorage("name", "");</code></pre>
+<h3>Example 2: useFetch</h3>
+<pre><code>function useFetch(url) {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() =&gt; {
+    let cancelled = false;
+    setLoading(true);
+    fetch(url)
+      .then(r =&gt; r.json())
+      .then(d =&gt; !cancelled &amp;&amp; setData(d))
+      .catch(e =&gt; !cancelled &amp;&amp; setError(e))
+      .finally(() =&gt; !cancelled &amp;&amp; setLoading(false));
+    return () =&gt; { cancelled = true; };
+  }, [url]);
+
+  return { data, loading, error };
+}</code></pre>
+<h3>Example 3: wrapping useContext</h3>
+<pre><code>function useTheme() {
+  const ctx = useContext(ThemeContext);
+  if (!ctx) throw new Error("useTheme must be used inside ThemeProvider");
+  return ctx;
+}</code></pre>
+<div class="use"><b>Rules:</b> call hooks only at the top level (no loops, conditions, or nested functions) and only from components or other hooks. Name must start with <code>use</code>.</div>
+</section>
+
+<section id="router-setup" data-g="React Router"><h2>Routing &amp; Routes</h2><span class="tag">react-router-dom</span>
+<h3>Purpose</h3>
+<p>React Router maps URLs to components in a single-page app without full page reloads. Install with <code>npm i react-router-dom</code>.</p>
+<h3>Basic setup</h3>
+<pre><code>// main.jsx
+import { BrowserRouter } from "react-router-dom";
+root.render(&lt;BrowserRouter&gt;&lt;App /&gt;&lt;/BrowserRouter&gt;);
+
+// App.jsx
+import { Routes, Route, Link } from "react-router-dom";
+
+function App() {
+  return (&lt;&gt;
+    &lt;nav&gt;
+      &lt;Link to="/"&gt;Home&lt;/Link&gt;
+      &lt;Link to="/about"&gt;About&lt;/Link&gt;
+    &lt;/nav&gt;
+    &lt;Routes&gt;
+      &lt;Route path="/" element={&lt;Home /&gt;} /&gt;
+      &lt;Route path="/about" element={&lt;About /&gt;} /&gt;
+      &lt;Route path="*" element={&lt;NotFound /&gt;} /&gt;   {/* catch-all 404 */}
+    &lt;/Routes&gt;
+  &lt;/&gt;);
+}</code></pre>
+<div class="scroll"><table><tr><th>Piece</th><th>Role</th></tr>
+<tr><td><code>BrowserRouter</code></td><td>Enables routing using the browser History API</td></tr>
+<tr><td><code>Routes</code> / <code>Route</code></td><td>Match the current URL to an <code>element</code></td></tr>
+<tr><td><code>Link</code> / <code>NavLink</code></td><td>Client-side navigation links; <code>NavLink</code> adds an active class</td></tr>
+<tr><td><code>path="*"</code></td><td>Fallback for unmatched URLs</td></tr></table></div>
+</section>
+
+<section id="nested" data-g="React Router"><h2>Nested Routes</h2><span class="tag">Outlet</span>
+<h3>Purpose</h3>
+<p>Child routes render inside a parent's layout. The parent places an <code>&lt;Outlet /&gt;</code> where the matched child should appear. The URL structure mirrors the UI structure.</p>
+<pre><code>&lt;Routes&gt;
+  &lt;Route path="/" element={&lt;Layout /&gt;}&gt;
+    &lt;Route index element={&lt;Home /&gt;} /&gt;                {/* "/" */}
+    &lt;Route path="dashboard" element={&lt;Dashboard /&gt;}&gt;
+      &lt;Route index element={&lt;Overview /&gt;} /&gt;         {/* "/dashboard" */}
+      &lt;Route path="settings" element={&lt;Settings /&gt;} /&gt;{/* "/dashboard/settings" */}
+    &lt;/Route&gt;
+  &lt;/Route&gt;
+&lt;/Routes&gt;
+
+import { Outlet } from "react-router-dom";
+function Dashboard() {
+  return (&lt;div&gt;
+    &lt;h2&gt;Dashboard&lt;/h2&gt;
+    &lt;Outlet /&gt;   {/* child route renders here */}
+  &lt;/div&gt;);
+}</code></pre>
+<div class="use"><b>Use cases:</b> shared layouts (navbar + footer), dashboards with tabs/sidebars, admin sections. <code>index</code> routes are the default child shown at the parent's path.</div>
+</section>
+
+<section id="params" data-g="React Router"><h2>Route Params</h2><span class="tag">useParams · useSearchParams</span>
+<h3>Purpose</h3>
+<p>Dynamic segments (prefixed with <code>:</code>) capture parts of the URL, such as an ID.</p>
+<pre><code>&lt;Route path="/users/:userId" element={&lt;UserProfile /&gt;} /&gt;
+
+import { useParams, useSearchParams } from "react-router-dom";
+
+function UserProfile() {
+  const { userId } = useParams();               // "/users/42" -&gt; "42" (always a string)
+  const [sp, setSp] = useSearchParams();        // "/users/42?tab=posts"
+  const tab = sp.get("tab") ?? "info";
+
+  return (&lt;&gt;
+    &lt;h2&gt;User {userId}&lt;/h2&gt;
+    &lt;button onClick={() =&gt; setSp({ tab: "posts" })}&gt;Posts&lt;/button&gt;
+  &lt;/&gt;);
+}</code></pre>
+<div class="note"><b>Remember:</b> params are strings. Convert with <code>Number(userId)</code> when needed. Use params for <i>identity</i> (<code>/products/7</code>) and query strings for <i>filters</i> (<code>?sort=price</code>).</div>
+</section>
+
+<section id="navigation" data-g="React Router"><h2>Navigation</h2><span class="tag">Link · NavLink · useNavigate · Navigate</span>
+<pre><code>import { Link, NavLink, useNavigate, Navigate, useLocation } from "react-router-dom";
+
+// 1. Declarative links
+&lt;Link to="/about"&gt;About&lt;/Link&gt;
+&lt;NavLink to="/dashboard" className={({ isActive }) =&gt; isActive ? "active" : ""}&gt;Dashboard&lt;/NavLink&gt;
+
+// 2. Programmatic navigation (after a form submit, login, etc.)
+function LoginForm() {
+  const navigate = useNavigate();
+  const onSubmit = async () =&gt; {
+    await login();
+    navigate("/dashboard", { replace: true });   // replace = no back-button to login
+  };
+  // navigate(-1) goes back, navigate(1) goes forward
+}
+
+// 3. Redirect during render (e.g. protected route)
+function Protected({ user, children }) {
+  return user ? children : &lt;Navigate to="/login" replace /&gt;;
+}
+
+// 4. Pass and read state
+navigate("/checkout", { state: { from: "cart" } });
+const { state } = useLocation();   // state.from</code></pre>
+</section>
+
+<section id="how" data-g="React Router"><h2>How Routing Works</h2>
+<ul>
+<li>The router listens to URL changes through the browser History API (<code>pushState</code>) and never reloads the page.</li>
+<li><code>Routes</code> compares the current location against each <code>Route</code> path (ranking the best match), then renders the matching element tree.</li>
+<li>Nested routes render through <code>Outlet</code>, so a parent layout stays mounted while children swap.</li>
+<li><code>Link</code> prevents the default anchor reload and calls <code>navigate</code> internally.</li>
+</ul>
+<h3>Mini project structure</h3>
+<pre><code>src/
+  main.jsx            // BrowserRouter + Providers
+  App.jsx             // Routes
+  context/ThemeContext.jsx
+  hooks/useFetch.js, useLocalStorage.js
+  pages/Home.jsx, Users.jsx, UserProfile.jsx, NotFound.jsx
+  components/Layout.jsx   // navbar + Outlet</code></pre>
+</section>
+
+<section id="cheat" data-g="Review"><h2>Cheat Sheet</h2>
+<div class="scroll"><table>
+<tr><th>Tool</th><th>Purpose</th><th>Triggers re-render?</th></tr>
+<tr><td><code>useRef</code></td><td>DOM access / persistent mutable value</td><td>No</td></tr>
+<tr><td><code>useMemo</code></td><td>Cache computed value</td><td>Only when deps change</td></tr>
+<tr><td><code>useCallback</code></td><td>Cache function identity</td><td>Only when deps change</td></tr>
+<tr><td><code>useContext</code></td><td>Read shared data</td><td>Yes, when Provider value changes</td></tr>
+<tr><td>Custom hook</td><td>Reuse stateful logic</td><td>Depends on hooks inside</td></tr>
+<tr><td><code>useParams</code></td><td>Read URL params</td><td>Yes, on URL change</td></tr>
+<tr><td><code>useNavigate</code></td><td>Navigate from code</td><td>No</td></tr>
+</table></div>
+<h3>Self-check questions</h3>
+<details><summary>1. Why doesn't changing ref.current cause a re-render?</summary><p>A ref is a plain object stored outside React's state system. React doesn't track mutations to it.</p></details>
+<details><summary>2. When is useCallback actually useful?</summary><p>When the function is passed to a <code>React.memo</code> child or used as a dependency of another hook, so a stable identity avoids unnecessary work.</p></details>
+<details><summary>3. How does an Outlet relate to nested routes?</summary><p>It marks where the parent layout renders the currently matched child route.</p></details>
+<details><summary>4. What type is a value from useParams?</summary><p>Always a string (or undefined), so convert it if you need a number.</p></details>
+<details><summary>5. What must a custom hook's name start with, and why?</summary><p><code>use</code>, so React and linters can enforce the rules of hooks.</p></details>
+</section>
+</main>
+</div>
+<script src="script.js"></script>
+</body>
+</html>

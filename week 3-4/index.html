@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="StyleStudio — a modern fashion lookbook and personal styling experience.">
+  <title>StyleStudio — Define Your Style</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <!-- Semantic HTML5 header -->
+  <header>
+    <div class="container nav-wrap">
+      <a href="#home" class="logo" aria-label="StyleStudio home">Style<span>Studio</span></a>
+
+      <!-- Semantic navigation -->
+      <nav aria-label="Main navigation">
+        <ul>
+          <li><a href="#collection">Collections</a></li>
+          <li><a href="#lookbook">Looks</a></li>
+          <li class="optional-link"><a href="#guide">Style Guide</a></li>
+          <li><a href="#consultation" class="nav-cta">Get Styled</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Semantic main content -->
+  <main id="home">
+
+    <!-- Hero section -->
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">The Edit / 2026</p>
+          <h1 id="hero-title">Define your <em>style.</em></h1>
+          <p>
+            StyleStudio is a modern fashion lookbook for discovering pieces,
+            building looks, and finding a style that feels completely yours.
+          </p>
+
+          <div class="button-row">
+            <a href="#collection" class="button">Explore Collection</a>
+            <a href="#consultation" class="button secondary">Find Your Style</a>
+          </div>
+        </div>
+
+        <figure class="hero-image">
+          <img
+            src="https://images.unsplash.com/photo-1496747611176-843222e1e57c?auto=format&fit=crop&w=1000&q=85"
+            alt="Fashion model wearing an elegant neutral outfit"
+          >
+          <figcaption class="hero-label">
+            <strong>Quiet Luxury</strong>
+            <small>Effortless pieces for everyday confidence.</small>
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- Collection section -->
+    <section id="collection" aria-labelledby="collection-title">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Featured collection</p>
+            <h2 class="section-title" id="collection-title">The essentials.</h2>
+            <p class="section-intro">
+              Carefully selected pieces designed to mix, layer and repeat.
+            </p>
+          </div>
+        </div>
+
+        <!-- CSS Grid -->
+        <div class="collection-grid">
+          <article class="fashion-card">
+            <figure>
+              <img src="https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=700&q=85" alt="Woman wearing a minimalist beige outfit" loading="lazy">
+              <span class="tag">New</span>
+            </figure>
+            <div class="card-body">
+              <h3>The Linen Set</h3>
+              <div class="card-meta"><span>Minimal / Summer</span><span class="price">₹3,990</span></div>
+            </div>
+          </article>
+
+          <article class="fashion-card">
+            <figure>
+              <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=700&q=85" alt="Fashion display with neutral clothing" loading="lazy">
+              <span class="tag">Bestseller</span>
+            </figure>
+            <div class="card-body">
+              <h3>Everyday Edit</h3>
+              <div class="card-meta"><span>Casual / Core</span><span class="price">₹2,850</span></div>
+            </div>
+          </article>
+
+          <article class="fashion-card">
+            <figure>
+              <img src="https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3?auto=format&fit=crop&w=700&q=85" alt="Stylish black and neutral fashion pieces" loading="lazy">
+              <span class="tag">Limited</span>
+            </figure>
+            <div class="card-body">
+              <h3>After Dark</h3>
+              <div class="card-meta"><span>Evening / Tailored</span><span class="price">₹4,650</span></div>
+            </div>
+          </article>
+
+          <article class="fashion-card">
+            <figure>
+              <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=700&q=85" alt="Model in a contemporary fashion outfit" loading="lazy">
+              <span class="tag">Trending</span>
+            </figure>
+            <div class="card-body">
+              <h3>City Muse</h3>
+              <div class="card-meta"><span>Street / Modern</span><span class="price">₹3,490</span></div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Lookbook section -->
+    <section class="lookbook" id="lookbook" aria-labelledby="lookbook-title">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Visual diary</p>
+            <h2 class="section-title" id="lookbook-title">The lookbook.</h2>
+            <p class="section-intro">
+              Four ways to build a wardrobe around your personality.
+            </p>
+          </div>
+        </div>
+
+        <!-- CSS Grid layout -->
+        <div class="lookbook-grid">
+          <figure class="look">
+            <img src="https://images.unsplash.com/photo-1485968579580-b6d095142e6e?auto=format&fit=crop&w=1000&q=85" alt="Editorial fashion portrait" loading="lazy">
+            <figcaption>01 / Minimal Muse</figcaption>
+          </figure>
+
+          <figure class="look">
+            <img src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=800&q=85" alt="Street style fashion look" loading="lazy">
+            <figcaption>02 / Street Edit</figcaption>
+          </figure>
+
+          <figure class="look">
+            <img src="https://images.unsplash.com/photo-1525507119028-ed4c629a60a3?auto=format&fit=crop&w=800&q=85" alt="Clothing rack with curated outfits" loading="lazy">
+            <figcaption>03 / Soft Tailoring</figcaption>
+          </figure>
+
+          <figure class="look">
+            <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=800&q=85" alt="Model wearing a contemporary outfit" loading="lazy">
+            <figcaption>04 / Weekend Mood</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- Style guide -->
+    <section id="guide" aria-labelledby="guide-title">
+      <div class="container guide-grid">
+        <div>
+          <p class="eyebrow">Style guide</p>
+          <h2 class="section-title" id="guide-title">Less, but better.</h2>
+          <p class="section-intro">
+            A few simple rules can make getting dressed easier and more intentional.
+          </p>
+
+          <div class="guide-list">
+            <article class="guide-item">
+              <span class="guide-number">01</span>
+              <div>
+                <h3>Start with one hero piece</h3>
+                <p>Let one strong piece lead the outfit, then keep the rest balanced.</p>
+              </div>
+            </article>
+
+            <article class="guide-item">
+              <span class="guide-number">02</span>
+              <div>
+                <h3>Build around neutrals</h3>
+                <p>Neutral foundations make statement pieces easier to wear repeatedly.</p>
+              </div>
+            </article>
+
+            <article class="guide-item">
+              <span class="guide-number">03</span>
+              <div>
+                <h3>Repeat what works</h3>
+                <p>Your best outfit formula is worth repeating in different combinations.</p>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <aside class="quote-box" aria-label="Style quote">
+          <blockquote>
+            “Fashion changes.<br>
+            Style remains.”
+            <cite>— Coco Chanel</cite>
+          </blockquote>
+        </aside>
+      </div>
+    </section>
+
+    <!-- Accessible form -->
+    <section class="consultation" id="consultation" aria-labelledby="consultation-title">
+      <div class="container form-layout">
+        <div>
+          <p class="eyebrow">Personal styling</p>
+          <h2 class="section-title" id="consultation-title">Find your style.</h2>
+          <p class="section-intro">
+            Tell us a little about your wardrobe and we'll help you create
+            a look that fits your personality, occasion and budget.
+          </p>
+          <p class="helper" style="margin-top:18px;">
+            Fields marked with <span class="required">*</span> are required.
+          </p>
+        </div>
+
+        <form id="styleForm" novalidate>
+          <fieldset>
+            <legend>Style consultation</legend>
+
+            <div class="form-grid">
+              <div class="field">
+                <label for="name">Full name <span class="required" aria-hidden="true">*</span></label>
+                <input id="name" name="name" type="text" autocomplete="name" required aria-required="true" placeholder="Your name">
+              </div>
+
+              <div class="field">
+                <label for="email">Email <span class="required" aria-hidden="true">*</span></label>
+                <input id="email" name="email" type="email" autocomplete="email" required aria-required="true" placeholder="you@example.com">
+              </div>
+
+              <div class="field">
+                <label for="style">Your style</label>
+                <select id="style" name="style">
+                  <option value="">Choose one</option>
+                  <option>Minimal &amp; Clean</option>
+                  <option>Streetwear</option>
+                  <option>Classic &amp; Elegant</option>
+                  <option>Boho</option>
+                  <option>Experimental</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label for="occasion">Main occasion</label>
+                <select id="occasion" name="occasion">
+                  <option value="">Choose one</option>
+                  <option>Everyday</option>
+                  <option>College</option>
+                  <option>Work</option>
+                  <option>Party</option>
+                  <option>Travel</option>
+                </select>
+              </div>
+
+              <div class="field full">
+                <label for="budget">Approximate budget</label>
+                <select id="budget" name="budget">
+                  <option value="">Choose a range</option>
+                  <option>Under ₹2,000</option>
+                  <option>₹2,000 – ₹5,000</option>
+                  <option>₹5,000 – ₹10,000</option>
+                  <option>₹10,000+</option>
+                </select>
+              </div>
+
+              <div class="field full">
+                <label for="message">Tell us about your style</label>
+                <textarea id="message" name="message" placeholder="Colours you love, pieces you wear often, or what you want to try..."></textarea>
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button class="button" type="submit">Request Consultation</button>
+              <span class="form-message" id="formMessage" role="status" aria-live="polite"></span>
+            </div>
+          </fieldset>
+        </form>
+      </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="newsletter" aria-labelledby="newsletter-title">
+      <div class="container newsletter-box">
+        <p class="eyebrow">The Style Letter</p>
+        <h2 class="section-title" id="newsletter-title">Stay in the edit.</h2>
+        <p class="section-intro" style="margin-inline:auto;">
+          New drops, styling ideas and fashion inspiration — delivered occasionally.
+        </p>
+
+        <form class="newsletter-form" id="newsletterForm">
+          <label for="newsletterEmail" class="sr-only" style="position:absolute;left:-9999px;">Email address</label>
+          <input id="newsletterEmail" type="email" placeholder="Your email address" required aria-label="Email address for newsletter">
+          <button class="button" type="submit">Subscribe</button>
+        </form>
+        <p class="form-message" id="newsletterMessage" role="status" aria-live="polite" style="margin-top:12px;"></p>
+      </div>
+    </section>
+  </main>
+
+  <!-- Semantic footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <a href="#home" class="logo">Style<span>Studio</span></a>
+          <p style="margin-top:12px;max-width:320px;">
+            A fashion lookbook concept built around personal style,
+            intentional dressing and modern design.
+          </p>
+        </div>
+
+        <div>
+          <h3>Explore</h3>
+          <div class="footer-links">
+            <a href="#collection">Collections</a>
+            <a href="#lookbook">Lookbook</a>
+            <a href="#guide">Style Guide</a>
+          </div>
+        </div>
+
+        <div>
+          <h3>Connect</h3>
+          <div class="footer-links">
+            <a href="#consultation">Personal Styling</a>
+            <a href="#newsletter-title">Newsletter</a>
+            <a href="#home">Back to top ↑</a>
+          </div>
+        </div>
+      </div>
+
+      <p class="copyright">
+        © 2026 StyleStudio. Created as a Week 3–4 HTML5 &amp; CSS3 project.
+      </p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

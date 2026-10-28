@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Movie Explorer & Watchlist</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="header">
+<div class="wrap">
+<div class="eyebrow">JAVASCRIPT ASYNCHRONOUS PROGRAMMING</div>
+<h1>🎬 Movie Explorer</h1>
+<p>Search movies, build a watchlist, and explore asynchronous JavaScript in a real application.</p>
+</div>
+</header>
+
+<main class="wrap">
+
+<section class="stats">
+<div class="stat"><span>SEARCH RESULTS</span><strong id="resultCount">0</strong></div>
+<div class="stat"><span>MY WATCHLIST</span><strong id="watchCount">0</strong></div>
+<div class="stat"><span>STORAGE</span><strong id="storage">READY</strong></div>
+</section>
+
+<section class="card">
+<h2>Search Movies</h2>
+<p class="sub">Search a movie title. The app uses fetch() and async/await to get data.</p>
+<div class="search">
+<input id="searchInput" placeholder="Try: batman, avatar, matrix..." />
+<button id="searchBtn">Search Movies</button>
+</div>
+<div id="searchStatus" class="status"></div>
+</section>
+
+<section class="card">
+<h2>Movie Results</h2>
+<p class="sub">Click “Add to Watchlist” to save a movie in your browser.</p>
+<div id="movies" class="movies"></div>
+<div id="emptyMovies" class="empty">Search for a movie to see results.</div>
+</section>
+
+<section class="card">
+<h2>My Watchlist</h2>
+<p class="sub">Your watchlist uses localStorage, so it remains after refreshing.</p>
+<div id="watchlist" class="watchlist"></div>
+<div id="emptyWatch" class="empty">Your watchlist is empty.</div>
+</section>
+
+<section class="card">
+<h2>Asynchronous JavaScript Lab</h2>
+<div class="method-grid">
+<div class="method"><b>Callback</b><span>Used when adding a movie and refreshing the watchlist after the save operation.</span></div>
+<div class="method"><b>Promise</b><span>The search process returns a Promise before data becomes available.</span></div>
+<div class="method"><b>async/await</b><span>Used to wait for the movie API response.</span></div>
+<div class="method"><b>fetch()</b><span>Requests movie information from the public OMDb API demo endpoint.</span></div>
+<div class="method"><b>DOM Events</b><span>Search, click, submit and delete actions are handled with event listeners.</span></div>
+<div class="method"><b>localStorage</b><span>Saves your personal watchlist in the browser.</span></div>
+</div>
+<br>
+<button id="promiseDemo">Run Promise Demo</button>
+<div id="promiseOutput" class="status"></div>
+</section>
+
+<section class="card">
+<h2>Code Used</h2>
+<p class="sub">Click a topic to display the actual implementation.</p>
+<div class="search" style="flex-wrap:wrap">
+<button data-code="callback">Callback</button>
+<button data-code="promise" class="secondary">Promise</button>
+<button data-code="async" class="secondary">async/await</button>
+<button data-code="fetch" class="secondary">fetch()</button>
+<button data-code="dom" class="secondary">DOM Events</button>
+<button data-code="storage" class="secondary">localStorage</button>
+</div>
+<pre id="codeBox"></pre>
+</section>
+
+<footer>Movie Explorer & Watchlist • JavaScript Practical Project</footer>
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>
